@@ -74,7 +74,7 @@ HFsignal=filtfilt(bHF,aHF,x);
 LFhilbert = hilbert(LFsignal);
 lfPhase=angle(LFhilbert); %This comes out shifted 90degrees
 lfPhase=lfPhase+pi/2;
-lfPhase(lfPhase>pi)=lfPhase(lfPhase>pi)-2*pi;
+lfPhase(lfPhase<0)=lfPhase(lfPhase<0)+2*pi;
 %freq = diff(unwrap(angle(hilbert(x)))); ?????
 
 %HF amplitude
@@ -83,7 +83,7 @@ hfAmp=HFhilbert.*conj(HFhilbert);
 
 %Phase Bins
 binWidthDeg=360/numPhaseBins;
-binEdgesDeg=-180:binWidthDeg:180;
+binEdgesDeg=0:binWidthDeg:360;
 binEdgesRad=deg2rad(binEdgesDeg);
 
 %Bin amp by phase, then normalize DOESN"T QUITE WORK YET, phase binning is
@@ -93,6 +93,13 @@ for bin=1:numPhaseBins
     phaseBinOnly=hfAmp.*isThisPhaseBin;
     binAmp(bin)=sum(phaseBinOnly)/sum(isThisPhaseBin);
 end
-binAmp=binAmp/sum(binAmp);    
+binAmp=binAmp/sum(binAmp);%normalized     
+
+%Shannon entropy
+Shannon H(P) = -sum(j:N)*P(j)*log[P(j)]
+        then
+        
+%KL distance
+Dkl(P, U) = log(N)-H(P)
 
 end
