@@ -1,3 +1,4 @@
+function [lfPhase,hfAmp]=Tort2010MI(x, time, LF, HF, varargin)
 %{ 
     Tort et al. 2010 phase-amplitude modulation index (MI) pseudocode
 
@@ -46,3 +47,51 @@
 
     Variance/confidents of results?
 %}
+for j=1:2:length(varargin)/2
+    if strcmpi(varargin{j},'filterOrder')
+        filterOrder=varargin{j+1};
+    elseif strcmpi(varargin{j},'numPhaseBins')
+        numPhaseBins=varargin{j+1};
+    end
+end    
+
+if ~exist(filterOrder,'var')
+    filterOrder=4;
+elseif ~exist('numPhaseBins','var')    
+    numPhaseBins=18;
+end
+
+dt=time(2)-time(1);
+fNQ=1/dt/2;
+
+%Create filters and apply to signal
+[bLF, aLF]=butter(filterOrder,[4 6]/fNQ);
+LFsignal=filtfilt(bLF,aLF,x);
+[bHF, aHF]=butter(filterOrder,[35 45]/fNQ);
+HFsignal=filtfilt(bHF,aHF,x);
+
+%LF phase
+LFhilbert = hilbert(LFsignal);
+lfPhase=angle(LFhilbert); %This comes out shifted 90degrees
+lfPhase=lfPhase+pi/2;
+lfPhase(lfPhase>2*pi)=lfPhase(lfPhase>2*pi)-2*pi;
+%freq = diff(unwrap(angle(hilbert(x)))); ?????
+
+%HF amplitude
+HFhilbert = hilbert(HFsignal);
+hfAmp=HFhilbert.*conj(HFhilbert);
+
+%Phase Bins
+binWidthDeg=360/numPhaseBins;
+binEdgesDeg=[0:binWidthDeg:360];
+binEdgesRad=deg2rad(binEdgesDeg);
+
+%Bin amp by phase, then normalize
+for bin=1:numPhaseBins
+    isThisPhaseBin=lfPhase > binWidthRad(2*bin-1) && lfPhase <= binWidthRad(2*bin);
+    phaseBinOnly=hfAmp.*isThisPhaseBin;
+    binMean(bin)=sum(phaseBinOnly)/sum(isThisPhaseBin);
+end
+binMean=binMean/sum(binMean);    
+
+end
