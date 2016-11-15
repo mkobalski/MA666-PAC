@@ -74,7 +74,7 @@ HFsignal=filtfilt(bHF,aHF,x);
 LFhilbert = hilbert(LFsignal);
 lfPhase=angle(LFhilbert); %This comes out shifted 90degrees
 lfPhase=lfPhase+pi/2;
-lfPhase(lfPhase>2*pi)=lfPhase(lfPhase>2*pi)-2*pi;
+lfPhase(lfPhase>pi)=lfPhase(lfPhase>pi)-2*pi;
 %freq = diff(unwrap(angle(hilbert(x)))); ?????
 
 %HF amplitude
@@ -83,15 +83,16 @@ hfAmp=HFhilbert.*conj(HFhilbert);
 
 %Phase Bins
 binWidthDeg=360/numPhaseBins;
-binEdgesDeg=[0:binWidthDeg:360];
+binEdgesDeg=-180:binWidthDeg:180;
 binEdgesRad=deg2rad(binEdgesDeg);
 
-%Bin amp by phase, then normalize
+%Bin amp by phase, then normalize DOESN"T QUITE WORK YET, phase binning is
+%wrong
 for bin=1:numPhaseBins
-    isThisPhaseBin=lfPhase > binWidthRad(2*bin-1) && lfPhase <= binWidthRad(2*bin);
+    isThisPhaseBin=lfPhase > binEdgesRad(bin) & lfPhase <= binEdgesRad(bin+1);
     phaseBinOnly=hfAmp.*isThisPhaseBin;
-    binMean(bin)=sum(phaseBinOnly)/sum(isThisPhaseBin);
+    binAmp(bin)=sum(phaseBinOnly)/sum(isThisPhaseBin);
 end
-binMean=binMean/sum(binMean);    
+binAmp=binAmp/sum(binAmp);    
 
 end
