@@ -53,12 +53,21 @@ elseif ~exist('numPhaseBins','var')
 end
 
 dt=time(2)-time(1);
+Fs=1/dt;
 fNQ=1/dt/2;
 
 %Create filters and apply to signal THIS DOES NOT WORK
-[bLF, aLF]=butter(filterOrder,[4 6]/fNQ,'bandpass');
+%{
+Notes: 
+- Higher order filter: use freqz(filter components, filter order) to assess
+how well filter is working
+- Lower sampling frequency
+- Penny et al GLM
+%}
+%[bLF, aLF]=butter(100,[4 6]/fNQ,'bandpass');
+bLF = fir1(1000,[4 6]/fNQ);
 LFsignal=filtfilt(bLF,aLF,x);
-[bHF, aHF]=butter(filterOrder,[35 45]/fNQ,'bandpass');
+[bHF, aHF]=butter(3,[35 45]/fNQ,'bandpass');
 HFsignal=filtfilt(bHF,aHF,x);
 
 %LF phase
@@ -88,7 +97,7 @@ binAmp=binAmp/sum(binAmp);%normalized
 %Here plot bar graph with sinewave overlay, xlabels phasebin edges
 
 %KL distance
-ShannonH =-sum(binAmp.*log(binAmp));
+ShannonH =-sum(binAmp.*log(binAmp)); %should be log2(x)?
 Dkl = log(numPhaseBins)-ShannonH;
 
 MI=Dkl/log(numPhaseBins);
