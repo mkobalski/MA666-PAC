@@ -1,4 +1,4 @@
-function [lfPhase,hfAmp]=Tort2010MI(x, time, LF, HF, varargin)
+function [MI, binAmp, lfPhase, hfAmp]=Tort2010MI(x, time, LF, HF, varargin)
 %{ 
     Tort et al. 2010 phase-amplitude modulation index (MI) pseudocode
 
@@ -26,15 +26,6 @@ function [lfPhase,hfAmp]=Tort2010MI(x, time, LF, HF, varargin)
 %}
 
 %{ 
-    Notes on implementation:
-    Probably want to go shannon route, don't have to deal with a second
-    distribution, but might be useful to do that version later as a sanity
-    check. 
-
-    Really this easy to calculate using these formulas right here?
-    
-    Assume that each value of P distribution is that in bin j
-    
     coherence between the amplitude envelope AfA and the phase-modulating rhythm fp
     "It should also be noted that the MI loses time information and it cannot 
     tell us whether the coupling occurred during the whole epoch being 
@@ -45,7 +36,7 @@ function [lfPhase,hfAmp]=Tort2010MI(x, time, LF, HF, varargin)
     Figure 3: probably need about 30 seconds of data to be confident in
     spite of noise in signal
 
-    Variance/confidents of results?
+    Variance/confidence of results?
 %}
 for j=1:2:length(varargin)/2
     if strcmpi(varargin{j},'filterOrder')
@@ -64,10 +55,10 @@ end
 dt=time(2)-time(1);
 fNQ=1/dt/2;
 
-%Create filters and apply to signal
-[bLF, aLF]=butter(filterOrder,[4 6]/fNQ);
+%Create filters and apply to signal THIS DOES NOT WORK
+[bLF, aLF]=butter(filterOrder,[4 6]/fNQ,'bandpass');
 LFsignal=filtfilt(bLF,aLF,x);
-[bHF, aHF]=butter(filterOrder,[35 45]/fNQ);
+[bHF, aHF]=butter(filterOrder,[35 45]/fNQ,'bandpass');
 HFsignal=filtfilt(bHF,aHF,x);
 
 %LF phase
@@ -86,20 +77,19 @@ binWidthDeg=360/numPhaseBins;
 binEdgesDeg=0:binWidthDeg:360;
 binEdgesRad=deg2rad(binEdgesDeg);
 
-%Bin amp by phase, then normalize DOESN"T QUITE WORK YET, phase binning is
-%wrong
+%Bin amp by phase, then normalize
 for bin=1:numPhaseBins
     isThisPhaseBin=lfPhase > binEdgesRad(bin) & lfPhase <= binEdgesRad(bin+1);
     phaseBinOnly=hfAmp.*isThisPhaseBin;
     binAmp(bin)=sum(phaseBinOnly)/sum(isThisPhaseBin);
 end
 binAmp=binAmp/sum(binAmp);%normalized     
-
-%Shannon entropy
-Shannon H(P) = -sum(j:N)*P(j)*log[P(j)]
-        then
         
-%KL distance
-Dkl(P, U) = log(N)-H(P)
+%Here plot bar graph with sinewave overlay, xlabels phasebin edges
 
+%KL distance
+ShannonH =-sum(binAmp.*log(binAmp));
+Dkl = log(numPhaseBins)-ShannonH;
+
+MI=Dkl/log(numPhaseBins);
 end

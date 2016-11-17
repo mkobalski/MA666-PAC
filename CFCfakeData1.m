@@ -36,6 +36,7 @@ for aa=1:partPoints; ascPhase( ((binTrim+1):floor((cyclePts/4)-binTrim))+cyclePt
 for aa=1:partPoints; ascPhase( (floor((cyclePts*0.75+1+binTrim)):(cyclePts-(binTrim)))+cyclePts*(aa-1) ) = 1; end
 
 %% Get some outputs
+HFsignal=HFdata.*peaks;
 y=LFdata+HFdata.*peaks;
 
 figure;
