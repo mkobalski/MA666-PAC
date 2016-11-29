@@ -19,7 +19,7 @@
 %
 %  By default, this function plots the results.
 
-function [r, r_CI, nCtlPts] = GLM_CFC_for_paper(Vlo, Vhi, nCtlPts, varargin)
+function [r, r_CI, nCtlPts] = Kramer_GLM_CFC_for_paper(Vlo, Vhi, nCtlPts, varargin)
 
   %Compute phase and amplitude.
   phi = angle(hilbert(Vlo));
