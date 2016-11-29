@@ -1,4 +1,4 @@
-function [MI, binAmp, lfPhase, hfAmp]=Tort2010MI(x, time, LF, HF, varargin)
+function [MI, binAmp, lfPhase, hfAmp]=Tort2010MI(LFsignal, HFsignal, varargin)
 %{ 
     Tort et al. 2010 phase-amplitude modulation index (MI) pseudocode
 
@@ -39,36 +39,14 @@ function [MI, binAmp, lfPhase, hfAmp]=Tort2010MI(x, time, LF, HF, varargin)
     Variance/confidence of results?
 %}
 for j=1:2:length(varargin)/2
-    if strcmpi(varargin{j},'filterOrder')
-        filterOrder=varargin{j+1};
-    elseif strcmpi(varargin{j},'numPhaseBins')
+    if strcmpi(varargin{j},'numPhaseBins')
         numPhaseBins=varargin{j+1};
     end
 end    
 
-if ~exist(filterOrder,'var')
-    filterOrder=4;
-elseif ~exist('numPhaseBins','var')    
+if ~exist('numPhaseBins','var')    
     numPhaseBins=18;
 end
-
-dt=time(2)-time(1);
-Fs=1/dt;
-fNQ=1/dt/2;
-
-%Create filters and apply to signal THIS DOES NOT WORK
-%{
-Notes: 
-- Higher order filter: use freqz(filter components, filter order) to assess
-how well filter is working
-- Lower sampling frequency
-- Penny et al GLM
-%}
-%[bLF, aLF]=butter(100,[4 6]/fNQ,'bandpass');
-bLF = fir1(1000,[4 6]/fNQ);
-LFsignal=filtfilt(bLF,aLF,x);
-[bHF, aHF]=butter(3,[35 45]/fNQ,'bandpass');
-HFsignal=filtfilt(bHF,aHF,x);
 
 %LF phase
 LFhilbert = hilbert(LFsignal);
