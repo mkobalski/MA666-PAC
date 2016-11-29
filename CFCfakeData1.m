@@ -1,8 +1,8 @@
 %% Set things up
-resol=0.0001;%1 ms
+resol=0.001;%1 ms
 LF = 5;
 HF = 40;
-numSeconds=5;
+numSeconds=30;
 HFamp=0.25;
 
 %% The actual simulated data
