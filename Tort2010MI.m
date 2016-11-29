@@ -1,4 +1,4 @@
-function [MI, binAmp, lfPhase, hfAmp]=Tort2010MI(LFsignal, HFsignal, varargin)
+function [MI, binAmp, lfPhase, hfAmp]=Tort2010MI(LFsignal, HFsignal, numPhaseBins)
 %{ 
     Tort et al. 2010 phase-amplitude modulation index (MI) pseudocode
 
@@ -38,11 +38,6 @@ function [MI, binAmp, lfPhase, hfAmp]=Tort2010MI(LFsignal, HFsignal, varargin)
 
     Variance/confidence of results?
 %}
-for j=1:2:length(varargin)/2
-    if strcmpi(varargin{j},'numPhaseBins')
-        numPhaseBins=varargin{j+1};
-    end
-end    
 
 if ~exist('numPhaseBins','var')    
     numPhaseBins=18;
@@ -79,4 +74,5 @@ ShannonH =-sum(binAmp.*log(binAmp)); %should be log2(x)?
 Dkl = log(numPhaseBins)-ShannonH;
 
 MI=Dkl/log(numPhaseBins);
+
 end
