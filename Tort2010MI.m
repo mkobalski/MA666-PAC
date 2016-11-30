@@ -70,9 +70,34 @@ binAmp=binAmp/sum(binAmp);%normalized
 %Here plot bar graph with sinewave overlay, xlabels phasebin edges
 
 %KL distance
-ShannonH =-sum(binAmp.*log(binAmp)); %should be log2(x)?
-Dkl = log(numPhaseBins)-ShannonH;
+logAmp=log2(binAmp);
+ShannonH =-sum(binAmp(logAmp~=-Inf).*logAmp(logAmp~=-Inf)); 
+Dkl = log2(numPhaseBins)-ShannonH;
 
-MI=Dkl/log(numPhaseBins);
+MI=Dkl/log2(numPhaseBins);
 
 end
+%{
+% Figures and quality control
+QC:
+uniform = zeros(numPhaseBins,1); uniform(:)=1/numPhaseBins;
+onebin = [0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
+small = [0 0.25 0.5 0.25 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
+    Do MI for each of these
+
+FiguresL
+bar(binAmp,'BarWidth',1)
+ylim([0 1])
+LFscaled=LFdata*0.15;
+LFscaled=LFscaled+0.25;
+ax1=gca;
+ax1_pos = ax1.Position;
+ax2 = axes('Position',ax1_pos,...
+    'XAxisLocation','top',...
+    'YAxisLocation','right',...
+    'Color','none');
+ylim([0 0.5])
+line(time,LFscaled,'Parent',ax2,'LineWidth',2.5,'Color','k')
+ax1.XTick=[0 5 10 15 20] %scale for 18?
+ax1.XTickLabel=[{'0', 'pi/2', 'pi', '3/2 pi', '2pi'}]
+%}
