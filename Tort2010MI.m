@@ -80,9 +80,9 @@ end
 %{
 % Figures and quality control
 QC:
-uniform = zeros(numPhaseBins,1); uniform(:)=1/numPhaseBins;
-onebin = [0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
-small = [0 0.25 0.5 0.25 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
+uniform = zeros(1,numPhaseBins); uniform(:)=1/numPhaseBins;
+onebin = zeros(1,numPhaseBins); onebin(2) = 1;
+small = zeros(1,numPhaseBins); small(2:4)=[0.25 0.5 0.25];
     Do MI for each of these
 
 FiguresL
