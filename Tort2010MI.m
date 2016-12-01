@@ -76,6 +76,7 @@ Dkl = log2(numPhaseBins)-ShannonH;
 
 MI=Dkl/log2(numPhaseBins);
 
+%p value?
 end
 %{
 % Figures and quality control
