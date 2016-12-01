@@ -1,4 +1,4 @@
-function [pac_value, pac_z, pac_sig] = erpac_corr(data, srate, events, timeWindow, lo_freq_phase, hi_freq_phase, lo_freq_amp, hi_freq_amp, surrogate_runs)
+function [pac_value, pac_z, pac_sig,phasedata] = erpac_corr(data, srate, events, timeWindow, lo_freq_phase, hi_freq_phase, lo_freq_amp, hi_freq_amp, surrogate_runs)
 
 %
 % function [pac_value, pac_z, pac_sig] = erpac_corr(data, srate, events, timeWindow, lo_freq_phase, hi_freq_phase, lo_freq_amp, hi_freq_amp, surrogate_runs)
