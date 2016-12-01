@@ -1,13 +1,27 @@
-function [binAmpTime,MItime]Tort2010OverTime(LFsignal,HFsignal,t,numPhaseBins,timeBinWidth,overlap)
+function [binAmpTime,MItime]=Tort2010OverTime(LFsignal,HFsignal,t,numPhaseBins,LF)
 %Runs Tort2010 over time 
-binCheat=timeBinWidth-overlap+1;
-numTimeBins=t/binCheat;
+%Does not handle when timeBinWidth and olverlap doesn't align to trial end
+%Right now picks timebin size and overlap for you
 
-for timeBin=1:numTimeBins
-    %pull data, maybe pre-bin by this bin number
-    %run tort
-    %put bin amp results into 2d matrix, rows are phase bin, columns time
-    %plot MI value overtime, maybe superimposed over it
+dt = t(2)-t(1);
+timeBinWidth = 1/dt/LF;
+overlap = timeBinWidth/4;
+binStep = timeBinWidth - overlap;
+ 
+bins = [1:binStep:length(t)]';
+bins(:,2) = bins(:,1)+timeBinWidth-1;
+if bins(end,2) > length(t)
+    %spacing doesn't align with end of signal
+end    
+
+binAmpTime = zeros(numPhaseBins,size(bins,1));
+MItime = zeros(size(bins,1),1);
+for timeBin=1:size(bins,1)
+    LFthisBin = LFsignal(bins(timeBin,1):bins(timeBin,2));
+    HFthisBin = HFsignal(bins(timeBin,1):bins(timeBin,2));
+    [MI, binAmp, ~, ~] = Tort2010MI(LFthisBin, HFthisBin, numPhaseBins);
+    MItime(tineBin) = MI;
+    binAmpTime(:,timeBin) = binAmp';
 end    
     
 end

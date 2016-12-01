@@ -101,4 +101,6 @@ ylim([0 0.5])
 line(time,LFscaled,'Parent',ax2,'LineWidth',2.5,'Color','k')
 ax1.XTick=[0 5 10 15 20] %scale for 18?
 ax1.XTickLabel=[{'0', 'pi/2', 'pi', '3/2 pi', '2pi'}]
+
+Also: Show MI for same data but various length of time
 %}
