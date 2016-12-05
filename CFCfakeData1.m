@@ -1,4 +1,4 @@
-function [time, y, HFsignal, LFdata]=CFCfakeData1(numSeconds, LF, HF, phaseLock, whiteNoiseAmp,binTrimming) 
+function [time, y, HFsignal, LFdata]=CFCfakeData1(numSeconds, LF, HF, phaseLock, whiteNoiseAmp,binTrimming, plotData) 
 
 
 %% Set things up
@@ -8,9 +8,11 @@ if ~exist('LF','var')
 elseif ~exist('HF','var')
     HF = 40;
 elseif ~exist('numSeconds','var')
-    numSeconds=30;
+    numSeconds = 30;
 elseif ~exist('binTrimming','var')
-    binTrimming=0.1; %Fraction of each edge to trim off of HF signal around this phase
+    binTrimming = 0.1; %Fraction of each edge to trim off of HF signal around this phase
+elseif ~exist('plotData','var')
+    plotData = 1;
 end    
 HFamp=0.25;
 
@@ -53,9 +55,11 @@ whiteNoise=whiteNoise-whiteNoiseAmp/2;
 HFsignal=HFdata.*multiplier;
 y=LFdata+HFsignal+whiteNoise;
 
+if plotData==1
 figure;
 plot(time, y)
 xlabel('time (ms)')
 title([num2str(numSeconds) 's of ' num2str(HF) 'Hz locked to the ' titlePhase ' of ' num2str(LF) 'Hz'])
+end
 
 end

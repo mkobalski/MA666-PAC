@@ -61,13 +61,12 @@ binEdgesRad=deg2rad(binEdgesDeg);
 
 %Bin amp by phase, then normalize
 for bin=1:numPhaseBins
-    isThisPhaseBin=lfPhase > binEdgesRad(bin) & lfPhase <= binEdgesRad(bin+1);
+    isThisPhaseBin=lfPhase > binEdgesRad(bin)...
+        & lfPhase <= binEdgesRad(bin+1);
     phaseBinOnly=hfAmp.*isThisPhaseBin;
     binAmp(bin)=sum(phaseBinOnly)/sum(isThisPhaseBin);
 end
-binAmp=binAmp/sum(binAmp);%normalized     
-        
-%Here plot bar graph with sinewave overlay, xlabels phasebin edges
+binAmp=binAmp/sum(binAmp);%normalized 
 
 %KL distance
 logAmp=log2(binAmp);
@@ -76,19 +75,23 @@ Dkl = log2(numPhaseBins)-ShannonH;
 
 MI=Dkl/log2(numPhaseBins);
 
-%p value?
-end
-%{
-% Figures and quality control
-QC:
-uniform = zeros(1,numPhaseBins); uniform(:)=1/numPhaseBins;
-onebin = zeros(1,numPhaseBins); onebin(2) = 1;
-small = zeros(1,numPhaseBins); small(2:4)=[0.25 0.5 0.25];
-    Do MI for each of these
+%p value?     
+%Create small chunks of the input signals, all same length, taken from
+%random sections of the signal. Then can association of amplitude (while
+%preserving many of it's features) with phase, average and sd those values 
 
-FiguresL
-bar(binAmp,'BarWidth',1)
+%Here plot bar graph with sinewave overlay, xlabels phasebin edges
+%{
+if asked for...
+figure;
+bar(binAmp,'g','BarWidth',1)
 ylim([0 1])
+xlim([0.5 18.5])
+xlabel('Phase')
+ylabel('Normalized HF amplitude')
+title(['Narrow Distribution, MI = ' num2str(MI)])
+time=[0.001:0.001:1];
+LFdata=sin(2*pi*time);
 LFscaled=LFdata*0.15;
 LFscaled=LFscaled+0.25;
 ax1=gca;
@@ -98,9 +101,11 @@ ax2 = axes('Position',ax1_pos,...
     'YAxisLocation','right',...
     'Color','none');
 ylim([0 0.5])
-line(time,LFscaled,'Parent',ax2,'LineWidth',2.5,'Color','k')
-ax1.XTick=[0 5 10 15 20] %scale for 18?
-ax1.XTickLabel=[{'0', 'pi/2', 'pi', '3/2 pi', '2pi'}]
-
-Also: Show MI for same data but various length of time
+line(time,LFscaled,'Parent',ax2,'LineWidth',2.5,'Color','b')
+axis off;
+ax1.XTick=[0.5 5 9.5 14 18.5]; %scale for 18?
+ax1.XTickLabel=[{'0', 'pi/2', 'pi', '3/2 pi', '2pi'}];
 %}
+
+
+end

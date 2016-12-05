@@ -25,3 +25,5 @@ for timeBin=1:size(bins,1)
 end    
     
 end
+
+[MI, binAmp, lfPhase, hfAmp]=Tort2010MI(LFsignal, HFsignal, numPhaseBins)
