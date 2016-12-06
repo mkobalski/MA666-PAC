@@ -90,52 +90,53 @@ ylabel('amount')
 %% 4 seconds no noise
 LF=5; HF=40;
 loNoise=0.65;
-hiNoise=1.2;
+hiNoise=1.1;
 numPhaseBins=18;
+binTrim = 0.10;
 
-[time, x, ~, ~]=CFCfakeData1(4, LF, HF, 'peaks', 0,0.15,1);
+[time, x, ~, ~]=CFCfakeData1(4, LF, HF, 'peaks', 0,binTrim,0);
 [LFsignal, HFsignal]=PreProcessForCFC(time,x,LF,HF);
 [MI, binAmp, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
 figure; bar(binAmp); title(['4s, 0.0 WN, MI= ' num2str(MI)])
 %some noise
-[time, x, ~, ~]=CFCfakeData1(4, LF, HF, 'peaks', loNoise,0.15,1);
+[time, x, ~, ~]=CFCfakeData1(4, LF, HF, 'peaks', loNoise,binTrim,0);
 [LFsignal, HFsignal]=PreProcessForCFC(time,x,LF,HF);
 [MI2, binAmp2, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
 figure; bar(binAmp2); title(['4s, 0.1 WN, MI= ' num2str(MI2)])
 %lots of noise
-[time, x, ~, ~]=CFCfakeData1(15, LF, HF, 'peaks', hiNoise,0.15,1);
+[time, x, ~, ~]=CFCfakeData1(15, LF, HF, 'peaks', hiNoise,binTrim,0);
 [LFsignal, HFsignal]=PreProcessForCFC(time,x,LF,HF);
 [MI3, binAmp3, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
 figure; bar(binAmp3); title(['4s, 0.4 WN, MI= ' num2str(MI3)])
 
 %15s no noise
-[time, x, ~, ~]=CFCfakeData1(15, LF, HF, 'peaks', 0,0.15,0);
+[time, x, ~, ~]=CFCfakeData1(15, LF, HF, 'peaks', 0,binTrim,0);
 [LFsignal, HFsignal]=PreProcessForCFC(time,x,LF,HF);
 [MI4, binAmp4, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
 figure; bar(binAmp4); title(['15s, 0.0 WN, MI= ' num2str(MI4)])
 %some noise
-[time, x, ~, ~]=CFCfakeData1(4, LF, HF, 'peaks', loNoise ,0.15);
+[time, x, ~, ~]=CFCfakeData1(4, LF, HF, 'peaks', loNoise ,binTrim,0);
 [LFsignal, HFsignal]=PreProcessForCFC(time,x,LF,HF);
 [MI5, binAmp5, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
 figure; bar(binAmp5); title(['15s, 0.1 WN, MI= ' num2str(MI5)])
 %lots of noise
-[time, x, ~, ~]=CFCfakeData1(15, LF, HF, 'peaks', 0,4.15);
+[time, x, ~, ~]=CFCfakeData1(15, LF, HF, 'peaks', hiNoise, binTrim,0);
 [LFsignal, HFsignal]=PreProcessForCFC(time,x,LF,HF);
 [MI6, binAmp6, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
 figure; bar(binAmp6); title(['15s, 0.4 WN, MI= ' num2str(MI6)])
 
 %30s no noise
-[time, x, ~, ~]=CFCfakeData1(30, LF, HF, 'peaks', 0,0.15);
+[time, x, ~, ~]=CFCfakeData1(30, LF, HF, 'peaks', 0,binTrim,0);
 [LFsignal, HFsignal]=PreProcessForCFC(time,x,LF,HF);
 [MI7, binAmp7, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
 figure; bar(binAmp7); title(['30s, 0.0 WN, MI= ' num2str(MI7)])
 %some noise
-[time, x, ~, ~]=CFCfakeData1(30, LF, HF, 'peaks', loNoise,0.15);
+[time, x, ~, ~]=CFCfakeData1(30, LF, HF, 'peaks', loNoise,binTrim,0);
 [LFsignal, HFsignal]=PreProcessForCFC(time,x,LF,HF);
 [MI8, binAmp8, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
 figure; bar(binAmp8); title(['30s, 0.1 WN, MI= ' num2str(MI8)])
 %lots of noise
-[time, x, ~, ~]=CFCfakeData1(30, LF, HF, 'peaks', 0,4.15);
+[time, x, ~, ~]=CFCfakeData1(30, LF, HF, 'peaks', hiNoise,binTrim,0);
 [LFsignal, HFsignal]=PreProcessForCFC(time,x,LF,HF);
 [MI9, binAmp9, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
 figure; bar(binAmp9); title(['30s, 0.4 WN, MI= ' num2str(MI9)])
