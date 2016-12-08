@@ -4,6 +4,8 @@ function [ShuffleMIs] = Tort2010MISurrogate(LFsignal, HFsignal, numShuffles, bin
 %MI on that. Repeats it a bunch. Expects binSizing to be a 2 item input,
 %of format [minLength maxLength] for bin sizes, in number of timestamps of
 %input signals.
+%is it ok to shuffle the signal it self, or do you have to shuffle the
+%amplitude envelope? Maybe figure out how to check to be sure...
 
 if length(binSizes)~=2
     disp('Error, binSizes must be 2, [min max]')
