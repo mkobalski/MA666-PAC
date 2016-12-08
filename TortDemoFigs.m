@@ -331,3 +331,16 @@ MIs=[MIs MI MI2 MI3];
 [time, x,LFsignal, HFsignal] = CFCfakeData2(30,LF,HF,distF,1,hiNoise);
 [MI3, binAmp3, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
 MIs=[MIs MI MI2 MI3];
+
+%% Tort surrogate stuff
+LF=5; HF=40;
+loNoise=0.65;
+hiNoise=1.1;
+numPhaseBins=18;
+binTrim = 0.10;
+binSizes=[75 200];%3 gamma cycles, 1 theta cycle)
+
+[time, x, ~, ~]=CFCfakeData1(4, LF, HF, 'peaks', 0,binTrim,0);
+[LFsignal, HFsignal]=PreProcessForCFC(time,x,LF,HF);
+[MI, binAmp, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
+[ShuffleMIs] = Tort2010MISurrogate(LFsignal, HFsignal, 1000, binSizes, numPhaseBins); 
