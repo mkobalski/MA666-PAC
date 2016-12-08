@@ -256,9 +256,78 @@ xlabel('Time (s)')
 ylabel('Frequency (Hz)')
 
 
+%% noise and lengths marek's version
+LF=5; HF=40;
+loNoise=0.2;
+hiNoise=0.5;
+numPhaseBins=18;
+MIs=[];
+distF=42;
 
 
+%4s
+[time, x, ~, ~] = CFCfakeData2(4,LF,HF,distF,1,0);
+[LFsignal, HFsignal]=PreProcessForCFC(time,x,LF,HF);
+[MI, binAmp, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
+[time, x, ~, ~] = CFCfakeData2(4,LF,HF,distF,1,loNoise);
+[LFsignal, HFsignal]=PreProcessForCFC(time,x,LF,HF);
+[MI2, binAmp2, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
+[time, x, ~, ~] = CFCfakeData2(4,LF,HF,distF,1,hiNoise);
+[LFsignal, HFsignal]=PreProcessForCFC(time,x,LF,HF);
+[MI3, binAmp3, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
+MIs=[MIs MI MI2 MI3];
+%15s
+[time, x, ~, ~] = CFCfakeData2(15,LF,HF,distF,1,0);
+[LFsignal, HFsignal]=PreProcessForCFC(time,x,LF,HF);
+[MI, binAmp, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
+[time, x, ~, ~] = CFCfakeData2(15,LF,HF,distF,1,loNoise);
+[LFsignal, HFsignal]=PreProcessForCFC(time,x,LF,HF);
+[MI2, binAmp2, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
+[time, x, ~, ~] = CFCfakeData2(15,LF,HF,distF,1,hiNoise);
+[LFsignal, HFsignal]=PreProcessForCFC(time,x,LF,HF);
+[MI3, binAmp3, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
+MIs=[MIs MI MI2 MI3];
+%30s
+[time, x, ~, ~] = CFCfakeData2(30,LF,HF,distF,1,0);
+[LFsignal, HFsignal]=PreProcessForCFC(time,x,LF,HF);
+[MI, binAmp, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
+[time, x, ~, ~] = CFCfakeData2(30,LF,HF,distF,1,loNoise);
+[LFsignal, HFsignal]=PreProcessForCFC(time,x,LF,HF);
+[MI2, binAmp2, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
+[time, x, ~, ~] = CFCfakeData2(30,LF,HF,distF,1,hiNoise);
+[LFsignal, HFsignal]=PreProcessForCFC(time,x,LF,HF);
+[MI3, binAmp3, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
+MIs=[MIs MI MI2 MI3];
+%values all come out pretty low
 
+%% Marek's raw signals
+LF=5; HF=40;
+loNoise=0.2;
+hiNoise=0.5;
+numPhaseBins=18;
+MIs=[];
+distF=42;
 
-
-
+[time, x, LFsignal, HFsignal] = CFCfakeData2(4,LF,HF,distF,1,0);
+[MI, binAmp, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
+[time, x2, LFsignal, HFsignal] = CFCfakeData2(4,LF,HF,distF,1,loNoise);
+[MI2, binAmp2, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
+[time, x3, LFsignal, HFsignal] = CFCfakeData2(4,LF,HF,distF,1,hiNoise);
+[MI3, binAmp3, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
+MIs=[MIs MI MI2 MI3];
+%15s
+[time, x, LFsignal, HFsignal] = CFCfakeData2(15,LF,HF,distF,1,0);
+[MI, binAmp, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
+[time, x, LFsignal, HFsignal] = CFCfakeData2(15,LF,HF,distF,1,loNoise);
+[MI2, binAmp2, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
+[time, x,LFsignal, HFsignal] = CFCfakeData2(15,LF,HF,distF,1,hiNoise);
+[MI3, binAmp3, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
+MIs=[MIs MI MI2 MI3];
+%30s
+[time, x, LFsignal, HFsignal] = CFCfakeData2(30,LF,HF,distF,1,0);
+[MI, binAmp, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
+[time, x,LFsignal, HFsignal] = CFCfakeData2(30,LF,HF,distF,1,loNoise);
+[MI2, binAmp2, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
+[time, x,LFsignal, HFsignal] = CFCfakeData2(30,LF,HF,distF,1,hiNoise);
+[MI3, binAmp3, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
+MIs=[MIs MI MI2 MI3];

@@ -106,37 +106,9 @@ axis off;
 ax1.XTick=[0.5 5 9.5 14 18.5]; %scale for 18?
 ax1.XTickLabel=[{'0', 'pi/2', 'pi', '3/2 pi', '2pi'}];
 %}
-%{
-%Surrogate control
-minLength = 50;
-maxLength = 100;
-vector =1:1000;
-%numBins = 10;
-%midLength=mean([maxLength minLength]);
-%jitter = 
 
 
-i = 1;
-inds(i,1) = 1;
-ends(i) = 1 + randi(maxLength - minLength) - 1 + minLength - 1;
-endDiff = max(vector) - ends(i);
-while endDiff >= minLength || ends(end) < max(vector)
-    i=i+1;
-    inds(i,1) = ends(i-1) + 1;
-    ends(i) = inds(i,1) + randi(maxLength - minLength) - 1 + minLength - 1;
-    endDiff = max(vector) - ends(i);
-end
-%Error conditions
-if max(vector) - inds(end,1) <= maxLength
-    ends(end) = max(vector);
-end    
-if inds(end,2) < maxLength
-    %step back through until find one that isn't too long to add the
-    %balance to
-end    
-if ends(end) > max(vector)
-    ends(end) = max(vector);
-end    
+
 %}
 
 end
