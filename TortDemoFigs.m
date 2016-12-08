@@ -147,18 +147,27 @@ LF=5; HF=40;
 loNoise=0.1;
 hiNoise=0.4;
 numPhaseBins=18;
+binSizes=[75 200];
 
 [~, ~, HFsignal, LFsignal]=CFCfakeData1(4, LF, HF, 'peaks', 0,0.15);
 [MI, binAmp, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
-figure; bar(binAmp); title(['4s, 0.0 WN, MI= ' num2str(MI)])
+[ShuffleMIs1] = Tort2010MISurrogate(LFsignal, HFsignal, 1000, binSizes, numPhaseBins); 
+
+%figure; bar(binAmp); title(['4s, 0.0 WN, MI= ' num2str(MI)])
 %some noise
 [~, ~, HFsignal, LFsignal]=CFCfakeData1(4, LF, HF, 'peaks', loNoise,0.15);
 [MI2, binAmp2, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
-figure; bar(binAmp2); title(['4s, 0.1 WN, MI= ' num2str(MI2)])
+[ShuffleMIs2] = Tort2010MISurrogate(LFsignal, HFsignal, 1000, binSizes, numPhaseBins); 
+
+%figure; bar(binAmp2); title(['4s, 0.1 WN, MI= ' num2str(MI2)])
 %lots of noise
 [~, ~, HFsignal, LFsignal]=CFCfakeData1(4, LF, HF, 'peaks', hiNoise,0.15);
 [MI3, binAmp3, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
-figure; bar(binAmp3); title(['4s, 0.4 WN, MI= ' num2str(MI3)])
+[ShuffleMIs3] = Tort2010MISurrogate(LFsignal, HFsignal, 1000, binSizes, numPhaseBins); 
+
+%figure; bar(binAmp3); title(['4s, 0.4 WN, MI= ' num2str(MI3)])
+ShuffleMeans=[mean(ShuffleMIs1) mean(ShuffleMIs2) mean(ShuffleMIs3)];
+ShuffleStd = [std(ShuffleMIs1) std(ShuffleMIs2) std(ShuffleMIs3)];
 
 %15s no noise
 [~, ~, HFsignal, LFsignal]=CFCfakeData1(15, LF, HF, 'peaks', 0,0.15);
@@ -263,19 +272,24 @@ hiNoise=0.5;
 numPhaseBins=18;
 MIs=[];
 distF=42;
-
+binSizes=[75 200];%3 gamma cycles, 1 theta cycle)
 
 %4s
 [time, x, ~, ~] = CFCfakeData2(4,LF,HF,distF,1,0);
 [LFsignal, HFsignal]=PreProcessForCFC(time,x,LF,HF);
 [MI, binAmp, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
+[ShuffleMIs1] = Tort2010MISurrogate(LFsignal, HFsignal, 1000, binSizes, numPhaseBins); 
 [time, x, ~, ~] = CFCfakeData2(4,LF,HF,distF,1,loNoise);
 [LFsignal, HFsignal]=PreProcessForCFC(time,x,LF,HF);
 [MI2, binAmp2, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
+[ShuffleMIs2] = Tort2010MISurrogate(LFsignal, HFsignal, 1000, binSizes, numPhaseBins); 
 [time, x, ~, ~] = CFCfakeData2(4,LF,HF,distF,1,hiNoise);
 [LFsignal, HFsignal]=PreProcessForCFC(time,x,LF,HF);
 [MI3, binAmp3, ~, ~]=Tort2010MI(LFsignal, HFsignal, numPhaseBins);
+[ShuffleMIs3] = Tort2010MISurrogate(LFsignal, HFsignal, 1000, binSizes, numPhaseBins); 
 MIs=[MIs MI MI2 MI3];
+ShuffleMeans=[mean(ShuffleMIs1) mean(ShuffleMIs2) mean(ShuffleMIs3)];
+ShuffleStd = [std(ShuffleMIs1) std(ShuffleMIs2) std(ShuffleMIs3)];
 %15s
 [time, x, ~, ~] = CFCfakeData2(15,LF,HF,distF,1,0);
 [LFsignal, HFsignal]=PreProcessForCFC(time,x,LF,HF);
